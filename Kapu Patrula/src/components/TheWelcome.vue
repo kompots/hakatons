@@ -6,7 +6,7 @@ import EcosystemIcon from './icons/IconEcosystem.vue'
 import CommunityIcon from './icons/IconCommunity.vue'
 import SupportIcon from './icons/IconSupport.vue'
 import Form from 'vform'
-
+import 'element-plus/theme-chalk/display.css'
 </script>
 <template>
   <el-row>
@@ -30,7 +30,7 @@ import Form from 'vform'
           <br>
         </div>
         <div>
-          <el-form-item label="Jūsu vārds">
+          <el-form-item label="Jūsu vārds" prop="firstname">
             <el-input v-model="form.firstname" />
           </el-form-item>
           <el-form-item label="Tālrunis">
@@ -41,7 +41,7 @@ import Form from 'vform'
           </el-form-item>
         </div>
       </el-collapse-item>
-      <el-collapse-item title="Kas noticis?" name="2">
+      <el-collapse-item title="Kas noticis?" :disabled="activeStep!==1" name="2">
         <div class="demo-button-style">
           <el-form-item label="Kas noticies?">
             <el-radio-group v-model="eventState">
@@ -67,28 +67,46 @@ import Form from 'vform'
 
         </div>
       </el-collapse-item>
-      <el-collapse-item title="Kur noticis?" name="3">
-        <div>
-          Simplify the process: keep operating process simple and intuitive;
-        </div>
-        <div>
-          Definite and clear: enunciate your intentions clearly so that the
-          users can quickly understand and make decisions;
-        </div>
-        <div>
-          Easy to identify: the interface should be straightforward, which helps
-          the users to identify and frees them from memorizing and recalling.
-        </div>
+      <el-collapse-item title="Kur noticis?"  :disabled="activeStep!==2" name="3">
+        <el-form-item label="Notikuma datums">
+          <el-date-picker
+              v-model="value1"
+              type="date"
+              placeholder="Pick a day">
+          </el-date-picker>
+        </el-form-item>
       </el-collapse-item>
-      <el-collapse-item title="Papildus informācija" name="4">
+      <el-collapse-item title="Papildus informācija" :disabled="activeStep!==3" name="4">
         <div>
-          Decision making: giving advices about operations is acceptable, but do
-          not make decisions for the users;
-        </div>
-        <div>
-          Controlled consequences: users should be granted the freedom to
-          operate, including canceling, aborting or terminating current
-          operation.
+          <el-form-item label="Šķirne">
+            <el-input v-model="form.email" />
+          </el-form-item>
+          <el-form-item label="Dzimums">
+            <el-input v-model="form.email" />
+          </el-form-item>
+          <el-form-item label="Vecums">
+            <el-input v-model="form.email" />
+          </el-form-item>
+          <el-form-item label="Apzīmējuma veids">
+            <el-input v-model="form.email" />
+          </el-form-item>
+          <el-form-item label="Apzīmējums">
+            <el-input v-model="form.email" />
+          </el-form-item>
+          <el-form-item label="Apraksts">
+            <el-input v-model="form.email" type="textarea" />
+          </el-form-item>
+          <el-divider content-position="left">Pievieno foto attēlus</el-divider>
+          <el-upload
+              action="http://127.0.0.1:5173/pic"
+              list-type="picture-card"
+              :on-preview="handlePictureCardPreview"
+              :on-remove="handleRemove">
+            <i class="el-icon-plus"></i>
+          </el-upload>
+          <el-dialog :visible.sync="dialogVisible">
+            <img width="100%" :src="dialogImageUrl" alt="">
+          </el-dialog>
         </div>
       </el-collapse-item>
 
@@ -118,14 +136,41 @@ export default {
         email: '',
         phone: '',
       }),
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now();
+        },
+        shortcuts: [{
+          text: 'Today',
+          onClick(picker) {
+            picker.$emit('pick', new Date());
+          }
+        }, {
+          text: 'Yesterday',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() - 3600 * 1000 * 24);
+            picker.$emit('pick', date);
+          }
+        }, {
+          text: 'A week ago',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+            picker.$emit('pick', date);
+          }
+        }]
+      },
+      value1: '',
+      value2: '',
       rules: {
         firstname: [
-          {required: true, message: 'Nav derīgs vārds', trigger: 'change', onkeyup: this.validateFirstname}
+          {required: true, message: 'Nav derīgs vārds', trigger: 'change', validator: this.validateFirstname}
         ],
       },
       step: ['1'],
       canSubmit: false,
-      activeStep: 4,
+      activeStep: 3,
       eventState: '',
       animal: '',
       animals: [
@@ -145,9 +190,8 @@ export default {
       msg: false
     }
   },
-  props: [
-    'x',
-  ],
+
+  props: [],
   created() {
   },
   mounted() {
@@ -160,10 +204,33 @@ export default {
         this.canSubmit = false;
       }
     },
-    validateFirstname(event) {
-      console.log("test");
-      this.msg = /^[a-z ,.'-]+$/i.test(event);
+    validateFirstname(event, value) {
+      this.msg = /^[a-z ,.'-]+$/i.test(value);
+     return this.msg
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
     }
   }
 }
 </script>
+
+<style >
+.demo-image__error .image-slot {
+  font-size: 30px;
+}
+.demo-image__error .image-slot .el-icon {
+  font-size: 30px;
+}
+.demo-image__error .el-image {
+  width: 100%;
+  height: 200px;
+}
+label{
+  width: 200px!important;
+}
+</style>
