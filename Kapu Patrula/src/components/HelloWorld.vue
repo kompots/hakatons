@@ -8,7 +8,7 @@ defineProps({
 </script>
 
 <template>
-  Musu sauklis te
+  <div class="hidden-sm-and-down"> Musu sauklis te</div>
 </template>
 
 <style scoped>

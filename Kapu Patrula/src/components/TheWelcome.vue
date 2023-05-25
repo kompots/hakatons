@@ -6,12 +6,13 @@ import EcosystemIcon from './icons/IconEcosystem.vue'
 import CommunityIcon from './icons/IconCommunity.vue'
 import SupportIcon from './icons/IconSupport.vue'
 import Form from 'vform'
+import { Picture as IconPicture } from '@element-plus/icons-vue'
 import 'element-plus/theme-chalk/display.css'
 </script>
 <template>
   <el-row>
-    <el-col :span="24">
-      <el-steps :active="activeStep" finish-status="success" align-center>
+    <el-col :span="24" class="hidden-sm-and-down">
+      <el-steps :active="activeStep" finish-status="success" align-center >
         <el-step title="Informācija par Jums" />
         <el-step title="Kas noticis?" />
         <el-step title="Kur noticis?" />
@@ -22,7 +23,7 @@ import 'element-plus/theme-chalk/display.css'
   <br>
 
   <div class="sludinajuma-forma">
-    <el-form :model="form" :rules="rules" label-width="120px">
+    <el-form :model="form" :rules="rules" label-position="top" label-width="220px!important">
     <el-collapse v-model="step" @change="handleChange">
       <el-collapse-item title="Informācija par Jums" name="1">
         <div>
@@ -54,8 +55,8 @@ import 'element-plus/theme-chalk/display.css'
 
           <el-divider />
 
-          <el-form-item label="Dzīvnieks">
-            <el-select v-model="animal" class="m-2" placeholder="Dzīvnieks">
+          <el-form-item label="Dzīvnieks" >
+            <el-select v-model="animal" class="m-2" placeholder="Dzīvnieks" style="width: 83vw;">
               <el-option
                   v-for="item in animals"
                   :key="item.value"
@@ -102,7 +103,7 @@ import 'element-plus/theme-chalk/display.css'
               list-type="picture-card"
               :on-preview="handlePictureCardPreview"
               :on-remove="handleRemove">
-            <i class="el-icon-plus"></i>
+            <el-icon><icon-picture /></el-icon>
           </el-upload>
           <el-dialog :visible.sync="dialogVisible">
             <img width="100%" :src="dialogImageUrl" alt="">
@@ -168,7 +169,7 @@ export default {
           {required: true, message: 'Nav derīgs vārds', trigger: 'change', validator: this.validateFirstname}
         ],
       },
-      step: ['1', '2'],
+      step: ['1', '2', '3', '4'],
       canSubmit: false,
       activeStep: 1,
       eventState: '',
@@ -228,7 +229,7 @@ export default {
 }
 .demo-image__error .el-image {
   width: 100%;
-  height: 200px;
+  height: 100px;
 }
 label{
   width: 200px!important;
