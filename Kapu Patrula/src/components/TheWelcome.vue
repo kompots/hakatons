@@ -22,7 +22,7 @@ import Form from 'vform'
   <br>
 
   <div class="sludinajuma-forma">
-    <el-form :model="form" label-width="120px">
+    <el-form :model="form" :rules="rules" label-width="120px">
     <el-collapse v-model="step" @change="handleChange">
       <el-collapse-item title="Informācija par Jums" name="1">
         <div>
@@ -118,6 +118,11 @@ export default {
         email: '',
         phone: '',
       }),
+      rules: {
+        firstname: [
+          {required: true, message: 'Nav derīgs vārds', trigger: 'change', onkeyup: this.validateFirstname}
+        ],
+      },
       step: ['1'],
       canSubmit: false,
       activeStep: 4,
@@ -140,11 +145,6 @@ export default {
       msg: false
     }
   },
-  watch: {
-    firstname(value) {
-      this.validateFirstname(value);
-    }
-  },
   props: [
     'x',
   ],
@@ -160,8 +160,9 @@ export default {
         this.canSubmit = false;
       }
     },
-    validateFirstname(value) {
-      this.msg = /^[a-z ,.'-]+$/i.test(value);
+    validateFirstname(event) {
+      console.log("test");
+      this.msg = /^[a-z ,.'-]+$/i.test(event);
     }
   }
 }
