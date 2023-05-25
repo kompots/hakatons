@@ -168,9 +168,9 @@ export default {
           {required: true, message: 'Nav derīgs vārds', trigger: 'change', validator: this.validateFirstname}
         ],
       },
-      step: ['1'],
+      step: ['1', '2'],
       canSubmit: false,
-      activeStep: 3,
+      activeStep: 1,
       eventState: '',
       animal: '',
       animals: [
