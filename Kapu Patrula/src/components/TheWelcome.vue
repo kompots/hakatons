@@ -108,12 +108,13 @@ import Form from 'vform'
 </template>
 <script>
 import {ElMessage} from 'element-plus'
+import Form from "vform";
 export default {
   name: 'Iesniegt sludinajumu',
   data() {
     return {
       form: new Form({
-        firtname: '',
+        firstname: '',
         email: '',
         phone: '',
       }),
@@ -135,7 +136,13 @@ export default {
           value: 'Cits',
           label: 'Cits',
         },
-      ]
+      ],
+      msg: false
+    }
+  },
+  watch: {
+    firstname(value) {
+      this.validateFirstname(value);
     }
   },
   props: [
@@ -152,6 +159,9 @@ export default {
       } else {
         this.canSubmit = false;
       }
+    },
+    validateFirstname(value) {
+      this.msg = /^[a-z ,.'-]+$/i.test(value);
     }
   }
 }
