@@ -42,13 +42,29 @@ import Form from 'vform'
         </div>
       </el-collapse-item>
       <el-collapse-item title="Kas noticis?" name="2">
-        <div>
-          Operation feedback: enable the users to clearly perceive their
-          operations by style updates and interactive effects;
-        </div>
-        <div>
-          Visual feedback: reflect current state by updating or rearranging
-          elements of the page.
+        <div class="demo-button-style">
+          <el-form-item label="Kas noticies?">
+            <el-radio-group v-model="eventState">
+              <el-radio label="Atrasts">Atrasts</el-radio>
+              <el-radio label="Pazudis">Pazudis</el-radio>
+              <el-radio label="Meklē jaunas mājas">Meklē jaunas mājas</el-radio>
+              <el-radio label="Klaiņo">Klaiņo</el-radio>
+            </el-radio-group>
+          </el-form-item>
+
+          <el-divider />
+
+          <el-form-item label="Dzīvnieks">
+            <el-select v-model="animal" class="m-2" placeholder="Dzīvnieks">
+              <el-option
+                  v-for="item in animals"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
+
         </div>
       </el-collapse-item>
       <el-collapse-item title="Kur noticis?" name="3">
@@ -103,7 +119,23 @@ export default {
       }),
       step: ['1'],
       canSubmit: false,
-      activeStep: 4
+      activeStep: 4,
+      eventState: '',
+      animal: '',
+      animals: [
+        {
+          value: 'Suns',
+          label: 'Suns',
+        },
+        {
+          value: 'Kaķis',
+          label: 'Kaķis',
+        },
+        {
+          value: 'Cits',
+          label: 'Cits',
+        },
+      ]
     }
   },
   props: [
