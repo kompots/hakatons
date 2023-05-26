@@ -106,44 +106,46 @@ import 'element-plus/theme-chalk/display.css'
       <el-collapse-item title="Papildus informācija" :disabled="activeStep!==3" name="4">
         <div>
           <el-form-item label="Šķirne">
-            <el-select v-model="form.skirne" class="m-2" placeholder="Šķirne" size="small" style="width: 83vw!important;">
-              <el-option
-                  v-for="item in skirnes"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-              />
-            </el-select>
+              <el-radio-group v-model="form.skirne">
+                <el-radio
+                    v-for="item in skirnes"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                />
+              </el-radio-group>
           </el-form-item>
           <el-form-item label="Dzimums">
-            <el-select v-model="form.dzimums" class="m-2" placeholder="Dzimums" size="small" style="width: 83vw!important;">
-              <el-option
+            <el-radio-group v-model="form.dzimums">
+              <el-radio
                   v-for="item in dzimums"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
               />
-            </el-select>
+            </el-radio-group>
           </el-form-item>
           <el-form-item label="Vecums">
-            <el-select v-model="form.vecums" class="m-2" placeholder="Vecums" size="small" style="width: 83vw!important;">
-              <el-option
+
+            <el-radio-group v-model="form.vecums">
+              <el-radio
                   v-for="item in vecums"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
               />
-            </el-select>
+            </el-radio-group>
+
           </el-form-item>
           <el-form-item label="Apzīmējuma veids">
-            <el-select v-model="form.apzimejums" class="m-2" placeholder="Apzimējuma veids" size="small" style="width: 83vw!important;">
-              <el-option
+            <el-radio-group v-model="form.apzimejums">
+              <el-radio
                   v-for="item in apzimejumi"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
               />
-            </el-select>
+            </el-radio-group>
           </el-form-item>
           <el-form-item label="Apzīmējums">
             <el-input v-model="form.apzimejumi" style="float: left; width: 75vw; margin-right: 16px;"/>
