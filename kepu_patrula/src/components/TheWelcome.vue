@@ -452,7 +452,7 @@ export default {
       return /^[A-Z0-9]{3,32}$/i.test(value);
     },
     isCorrectDescription(event, value) {
-      return /^[A-Z0-9]*$/i.test(value);
+      return /^[A-Z 0-9 a-z]*$/i.test(value);
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
