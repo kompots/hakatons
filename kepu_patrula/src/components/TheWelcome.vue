@@ -185,7 +185,7 @@ import 'element-plus/theme-chalk/display.css'
     </el-collapse>
 <div>
   <br>
-  <el-checkbox v-model="checked2" @change="toggleSubmitButtons($event)">Esmu iepazinies ar lietošanas noteikumiem</el-checkbox>
+  <el-checkbox v-model="checked2" @change="toggleSubmitButtons($event)" :disabled="canFinish">Esmu iepazinies ar lietošanas noteikumiem</el-checkbox>
   <el-divider/>
   <el-form-item>
     <el-button type="success" :disabled="!canSubmit" @click="submitForm()">Iesniegt sludinājumu</el-button>
@@ -236,6 +236,7 @@ export default {
       }),
       dialogImageUrl: '',
       dialogVisible: false,
+      canFinish: true,
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() > Date.now();
@@ -438,6 +439,7 @@ export default {
     isCorrectDate(event, value) {
       this.isDate = new Date(value).getTime() <= new Date().getTime();
       this.isWhereHappenedFullFilled();
+      this.canFinish = false
       return this.isDate;
     },
     isWhereHappenedFullFilled() {
