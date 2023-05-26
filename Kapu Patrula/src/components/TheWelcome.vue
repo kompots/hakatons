@@ -38,7 +38,7 @@ import 'element-plus/theme-chalk/display.css'
             <el-input v-model="form.phone" />
           </el-form-item>
           <el-form-item label="E-pasts" prop="email">
-            <el-input v-model="form.email" />
+            <el-input type="email" v-model="form.email" />
           </el-form-item>
         </div>
       </el-collapse-item>
