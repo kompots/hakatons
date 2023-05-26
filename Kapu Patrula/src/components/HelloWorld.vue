@@ -8,7 +8,8 @@ defineProps({
 </script>
 
 <template>
-  <div class="hidden-sm-and-down"> Musu sauklis te</div>
+  <div class="hidden-sm-and-down">Ziņo par <strong>atrastu</strong> dzīvnieku<br>
+    <strong>Atrod</strong> savu mīluli</div>
 </template>
 
 <style scoped>
