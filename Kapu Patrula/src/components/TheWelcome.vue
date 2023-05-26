@@ -23,7 +23,7 @@ import 'element-plus/theme-chalk/display.css'
   <br>
 
   <div class="sludinajuma-forma">
-    <el-form :model="form" :rules="rules" label-position="top" label-width="220px!important">
+    <el-form :model="form" :rules="rules" label-position="top" id="sludinajums" label-width="220px!important">
     <el-collapse v-model="step" @change="handleChange">
       <el-collapse-item title="Informācija par Jums" name="1">
         <div>
@@ -65,7 +65,7 @@ import 'element-plus/theme-chalk/display.css'
           </el-popover>
 
           <el-form-item label="Dzīvnieks" >
-            <el-radio-group v-model="animal">
+            <el-radio-group v-model="form.animal">
               <el-radio label="Suns">Suns</el-radio>
               <el-radio label="Kaķis">Kaķis</el-radio>
               <el-radio label="Cits">Cits</el-radio>
@@ -175,7 +175,7 @@ import 'element-plus/theme-chalk/display.css'
   <el-divider/>
   <el-form-item>
     <el-button type="success" :disabled="!canSubmit" @click="submitForm()">Iesniegt sludinājumu</el-button>
-    <el-button>Atcelt</el-button>
+    <el-button @click="resetForm()">Atcelt</el-button>
   </el-form-item>
 </div>
 
@@ -194,6 +194,7 @@ export default {
         email: '',
         phone: '',
         skirne: '',
+        animal: '',
         vecums: '',
         apzimejums: '',
         apzimejumi: '',
@@ -379,6 +380,9 @@ export default {
     submitForm(){
       console.log(this.form)
 
+    },
+    resetForm(){
+      document.getElementById("sludinajums").reset();
     }
   }
 }
