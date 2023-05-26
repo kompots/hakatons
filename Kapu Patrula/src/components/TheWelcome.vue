@@ -78,7 +78,7 @@ import 'element-plus/theme-chalk/display.css'
         <el-form-item label="Notikuma datums" >
           <el-date-picker
               style="width: 83vw;!important;"
-              v-model="value1"
+              v-model="form.date"
               type="date"
               placeholder="Izvēlieties datumu">
           </el-date-picker>
@@ -141,7 +141,7 @@ import 'element-plus/theme-chalk/display.css'
             </el-popover>
           </el-form-item>
           <el-form-item label="Apraksts">
-            <el-input v-model="form.email" type="textarea" style="float: left; width: 75vw; margin-right: 16px;"/>
+            <el-input v-model="form.description" type="textarea" style="float: left; width: 75vw; margin-right: 16px;"/>
             <el-popover
                 placement="left-start"
                 :width="300"
@@ -198,6 +198,9 @@ export default {
         vecums: '',
         apzimejums: '',
         apzimejumi: '',
+        date: '',
+        dzimums: '',
+        description: ''
       }),
       pickerOptions: {
         disabledDate(time) {
