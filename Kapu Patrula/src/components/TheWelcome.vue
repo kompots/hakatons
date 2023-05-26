@@ -6,7 +6,7 @@ import EcosystemIcon from './icons/IconEcosystem.vue'
 import CommunityIcon from './icons/IconCommunity.vue'
 import SupportIcon from './icons/IconSupport.vue'
 import Form from 'vform'
-import { Picture as IconPicture } from '@element-plus/icons-vue'
+import { Picture as IconPicture, InfoFilled } from '@element-plus/icons-vue'
 import 'element-plus/theme-chalk/display.css'
 </script>
 <template>
@@ -44,7 +44,7 @@ import 'element-plus/theme-chalk/display.css'
       </el-collapse-item>
       <el-collapse-item title="Kas noticis?" :disabled="activeStep!==1" name="2">
         <div class="demo-button-style">
-          <el-form-item label="Kas noticies?" prop="happened">
+          <el-form-item label="Status" style="float: left; width: 75vw; margin-right: 16px;">
             <el-radio-group v-model="eventState">
               <el-radio label="Atrasts">Atrasts</el-radio>
               <el-radio label="Pazudis">Pazudis</el-radio>
@@ -52,53 +52,110 @@ import 'element-plus/theme-chalk/display.css'
               <el-radio label="Klaiņo">Klaiņo</el-radio>
             </el-radio-group>
           </el-form-item>
-
-          <el-divider />
+          <el-popover
+              placement="left-start"
+              :width="300"
+              trigger="hover"
+              content='"Meklē mājas" neattiecas uz atrastiem dzīvniekiem, bet uz tiem, kurus privātpersonas vēlas atdot jauniem saimniekiem.'>
+            <template #reference>
+              <el-icon>
+                <InfoFilled/>
+              </el-icon>
+            </template>
+          </el-popover>
 
           <el-form-item label="Dzīvnieks" >
-            <el-select v-model="animal" class="m-2" placeholder="Dzīvnieks" style="width: 83vw;">
-              <el-option
-                  v-for="item in animals"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-              />
-            </el-select>
+            <el-radio-group v-model="animal">
+              <el-radio label="Suns">Suns</el-radio>
+              <el-radio label="Kaķis">Kaķis</el-radio>
+              <el-radio label="Cits">Cits</el-radio>
+            </el-radio-group>
           </el-form-item>
 
         </div>
       </el-collapse-item>
       <el-collapse-item title="Kur noticis?"  :disabled="activeStep!==2" name="3">
-        <el-form-item label="Notikuma datums">
+        <el-form-item label="Notikuma datums" >
           <el-date-picker
+              style="width: 83vw;!important;"
               v-model="value1"
               type="date"
-              placeholder="Pick a day">
+              placeholder="Izvēlieties datumu">
           </el-date-picker>
         </el-form-item>
       </el-collapse-item>
       <el-collapse-item title="Papildus informācija" :disabled="activeStep!==3" name="4">
         <div>
           <el-form-item label="Šķirne">
-            <el-input v-model="form.email" />
+            <el-select v-model="form.skirne" class="m-2" placeholder="Šķirne" size="small" style="width: 83vw!important;">
+              <el-option
+                  v-for="item in skirnes"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+              />
+            </el-select>
           </el-form-item>
           <el-form-item label="Dzimums">
-            <el-input v-model="form.email" />
+            <el-select v-model="form.dzimums" class="m-2" placeholder="Dzimums" size="small" style="width: 83vw!important;">
+              <el-option
+                  v-for="item in dzimums"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+              />
+            </el-select>
           </el-form-item>
           <el-form-item label="Vecums">
-            <el-input v-model="form.email" />
+            <el-select v-model="form.vecums" class="m-2" placeholder="Vecums" size="small" style="width: 83vw!important;">
+              <el-option
+                  v-for="item in vecums"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+              />
+            </el-select>
           </el-form-item>
           <el-form-item label="Apzīmējuma veids">
-            <el-input v-model="form.email" />
+            <el-select v-model="form.apzimejums" class="m-2" placeholder="Apzimējuma veids" size="small" style="width: 83vw!important;">
+              <el-option
+                  v-for="item in apzimejumi"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+              />
+            </el-select>
           </el-form-item>
           <el-form-item label="Apzīmējums">
-            <el-input v-model="form.email" />
+            <el-input v-model="form.apzimejumi" style="float: left; width: 75vw; margin-right: 16px;"/>
+            <el-popover
+                placement="left-start"
+                :width="300"
+                trigger="hover"
+                content="Vai dzīvnieks ir kaut kādā veidā iezīmēts, piemēram, tetovēts? Ievadiet apzīmējuma numuru. Ja dzīvnieks ir čipēts, tad ievadiet mikroshēmas numuru.">
+              <template #reference>
+                <el-icon>
+                  <InfoFilled/>
+                </el-icon>
+              </template>
+            </el-popover>
           </el-form-item>
           <el-form-item label="Apraksts">
-            <el-input v-model="form.email" type="textarea" />
+            <el-input v-model="form.email" type="textarea" style="float: left; width: 75vw; margin-right: 16px;"/>
+            <el-popover
+                placement="left-start"
+                :width="300"
+                trigger="hover"
+                content='Raksturojiet dzīvnieku īsi un precīzi, piemēram, "Ļoti gudrs - zin visas komandas. Bija iekļuvis satiksmes negadījumā, operēta priekšķepa".'>
+              <template #reference>
+                <el-icon>
+                  <InfoFilled/>
+                </el-icon>
+              </template>
+            </el-popover>
           </el-form-item>
           <el-divider content-position="left">Pievieno foto attēlus</el-divider>
-          <el-upload
+          <el-upload style="position: relative; left: 50%; margin-left: -78px;"
               action="http://127.0.0.1:5173/pic"
               list-type="picture-card"
               :on-preview="handlePictureCardPreview"
@@ -117,7 +174,7 @@ import 'element-plus/theme-chalk/display.css'
   <el-checkbox v-model="checked2" @change="toggleSubmitButtons($event)">Esmu iepazinies ar lietošanas noteikumiem</el-checkbox>
   <el-divider/>
   <el-form-item>
-    <el-button type="success" :disabled="!canSubmit">Iesniegt sludinājumu</el-button>
+    <el-button type="success" :disabled="!canSubmit" @click="submitForm()">Iesniegt sludinājumu</el-button>
     <el-button>Atcelt</el-button>
   </el-form-item>
 </div>
@@ -136,6 +193,10 @@ export default {
         firstname: '',
         email: '',
         phone: '',
+        skirne: '',
+        vecums: '',
+        apzimejums: '',
+        apzimejumi: '',
       }),
       pickerOptions: {
         disabledDate(time) {
@@ -197,6 +258,74 @@ export default {
           label: 'Cits',
         },
       ],
+      apzimejumi: [
+        {
+          value: 'Tetovējums',
+          label: 'Tetovējums',
+        },
+        {
+          value: 'Čips',
+          label: 'Čips',
+        },
+        ],
+      vecums: [
+        {
+          value: 'Nav zināms',
+          label: 'Nav zinams',
+        },
+        {
+          value: '1-6 mēneši',
+          label: '1-6 mēneši',
+        },
+        {
+          value: '7-12 mēneši',
+          label: '7-12 mēneši',
+        },
+        {
+          value: '1-3 gadi',
+          label: '1-3 gadi',
+        },
+        {
+          value: '4-8 gadi',
+          label: '4-8 gadi',
+        },
+        {
+          value: '8+ gadi',
+          label: '>8 gadi',
+        },
+      ],
+      skirnes: [
+        {
+          value: 'Bez šķirnes',
+          label: 'b/s',
+        },
+        {
+          value: 'Šķirnes',
+          label: 'Šķirnes',
+        },
+      ],
+      dzimums: [
+        {
+          value: 'Mātīte',
+          label: 'Mātīte',
+        },
+        {
+          value: 'Tēviņš',
+          label: 'Tēviņš',
+        },
+        {
+          value: 'Sterilizēta mātīte',
+          label: 'Sterilizēta mātīte',
+        },
+        {
+          value: 'Kastrēts tēviņš',
+          label: 'Kastrēts tēviņš',
+        },
+        {
+          value: 'Nezināms',
+          label: 'Nezināms',
+        },
+      ],
       isFirstName: false,
       isPhone: false,
       isEmail: false
@@ -246,6 +375,10 @@ export default {
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
+    },
+    submitForm(){
+      console.log(this.form)
+
     }
   }
 }

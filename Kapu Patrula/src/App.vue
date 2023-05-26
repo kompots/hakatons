@@ -9,7 +9,7 @@ import HelloWorld from './components/HelloWorld.vue'
     <div class="wrapper">
       <HelloWorld msg="You did it!" />
       <nav>
-        <RouterLink to="/">Iesniegt sludzinājumu</RouterLink>
+        <RouterLink to="/">Iesniegt sludinājumu</RouterLink>
         <RouterLink to="/about">Lietošanas noteikumi</RouterLink>
       </nav>
     </div>
