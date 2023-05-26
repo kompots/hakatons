@@ -77,16 +77,11 @@ import 'element-plus/theme-chalk/display.css'
       <el-collapse-item title="Kur noticis?"  :disabled="activeStep!==2" name="3">
         <el-form-item label="Notikuma vieta" >
             <GMapMap
-                ref="google"
                 :center="form.center"
                 :zoom="7"
                 map-type-id="terrain"
                 style="width: 500px; height: 300px"
             >
-              <GMapCluster
-                  :algorithm="form.algorithm"
-                  :renderer="{ renderer: this.renderer }"
-              >
                 <GMapMarker
                     :key="index"
                     v-for="(m, index) in form.markers"
@@ -95,7 +90,6 @@ import 'element-plus/theme-chalk/display.css'
                     :draggable="true"
                     @click="form.center=m.position"
                     />
-              </GMapCluster>
             </GMapMap>
         </el-form-item>
         <el-form-item label="Notikuma datums" prop="date">
@@ -206,7 +200,6 @@ import 'element-plus/theme-chalk/display.css'
   </div>
 </template>
 <script>
-import {GridAlgorithm} from '@googlemaps/markerclusterer';
 import {ElMessage} from 'element-plus'
 import Form from "vform";
 export default {
@@ -214,7 +207,6 @@ export default {
   data() {
     return {
       form: new Form({
-        algorithm: new GridAlgorithm({}),
         firstname: '',
         email: '',
         phone: '',
@@ -391,15 +383,6 @@ export default {
   mounted() {
   },
   methods: {
-    renderer: ({count, position}) => new this.google.maps.Marker({
-      label: {
-        text: String(count),
-        color: 'white',
-        fontSize: '10px',
-      },
-      position,
-      zIndex: Number(this.google.maps.Marker.MAX_ZINDEX) + count,
-    }),
     toggleSubmitButtons(event){
       if(event){
         this.canSubmit = true;
