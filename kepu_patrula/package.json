@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fawmi/vue-google-maps": "^0.9.79",
     "@popperjs/core": "^2.11.7",
     "element-plus": "^2.3.5",
     "pinia": "^2.0.36",
