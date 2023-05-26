@@ -170,14 +170,14 @@ import 'element-plus/theme-chalk/display.css'
           </el-form-item>
           <el-divider content-position="left">Pievieno foto attēlus</el-divider>
           <el-upload style="position: relative; left: 50%; margin-left: -78px;"
-              action="http://127.0.0.1:5173/pic"
+                     action="https://f.kalni.app"
               list-type="picture-card"
               :on-preview="handlePictureCardPreview"
-              :on-remove="handleRemove">
+              >
             <el-icon><icon-picture /></el-icon>
           </el-upload>
           <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt="">
+            <img width="100%" :src="dialogImageUrl" alt="" id="blah">
           </el-dialog>
         </div>
       </el-collapse-item>
@@ -234,6 +234,8 @@ export default {
           }
         ]
       }),
+      dialogImageUrl: '',
+      dialogVisible: false,
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() > Date.now();
@@ -448,7 +450,7 @@ export default {
       return /^[A-Z0-9]{3,32}$/i.test(value);
     },
     isCorrectDescription(event, value) {
-      return /^[A-Z0-9]$/i.test(value);
+      return /^[A-Z0-9]*$/i.test(value);
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
