@@ -34,17 +34,17 @@ import 'element-plus/theme-chalk/display.css'
           <el-form-item label="Jūsu vārds" prop="firstname">
             <el-input v-model="form.firstname" />
           </el-form-item>
-          <el-form-item label="Tālrunis">
+          <el-form-item label="Tālrunis" prop="phone">
             <el-input v-model="form.phone" />
           </el-form-item>
-          <el-form-item label="E-pasts">
+          <el-form-item label="E-pasts" prop="email">
             <el-input v-model="form.email" />
           </el-form-item>
         </div>
       </el-collapse-item>
       <el-collapse-item title="Kas noticis?" :disabled="activeStep!==1" name="2">
         <div class="demo-button-style">
-          <el-form-item label="Kas noticies?">
+          <el-form-item label="Kas noticies?" prop="happened">
             <el-radio-group v-model="eventState">
               <el-radio label="Atrasts">Atrasts</el-radio>
               <el-radio label="Pazudis">Pazudis</el-radio>
@@ -168,10 +168,19 @@ export default {
         firstname: [
           {required: true, message: 'Nav derīgs vārds', trigger: 'change', validator: this.validateFirstname}
         ],
+        phone: [
+          {required: true, message: 'Nav derīgs mobilā telefona numurs', trigger: 'change', validator: this.validatePhone}
+        ],
+        email: [
+          {required: true, message: 'Nav derīga e-pasta adrese', trigger: 'change', validator: this.validateEmail}
+        ],
+        happened: [
+          {require: true, trigger: 'change', validator: this.isSelectedChoice}
+        ],
       },
-      step: ['1', '2', '3', '4'],
+      step: ['1'],
       canSubmit: false,
-      activeStep: 1,
+      activeStep: 0,
       eventState: '',
       animal: '',
       animals: [
@@ -188,7 +197,9 @@ export default {
           label: 'Cits',
         },
       ],
-      msg: false
+      isFirstName: false,
+      isPhone: false,
+      isEmail: false
     }
   },
 
@@ -206,8 +217,28 @@ export default {
       }
     },
     validateFirstname(event, value) {
-      this.msg = /^[a-z ,.'-]+$/i.test(value);
-     return this.msg
+      this.isFirstName = /^[a-z ,.'-]+$/i.test(value);
+      this.validateContactInfo();
+      return this.isFirstName;
+    },
+    validatePhone(event, value) {
+      this.isPhone = /^[+]?[0-9]{0,3}[-\s.]?[0-9]{8}$/i.test(value);
+      this.validateContactInfo();
+      return this.isPhone;
+    },
+    validateEmail(event, value) {
+      this.isEmail = /^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/i.test(value);
+      this.validateContactInfo();
+      return this.isEmail;
+    },
+    validateContactInfo() {
+      if (this.isFirstName && this.isPhone && this.isEmail && this.activeStep === 0) {
+        this.activeStep++;
+        this.step.push("2");
+      }
+    },
+    isSelectedChoice(event, value) {
+      return this.eventState != '';
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
