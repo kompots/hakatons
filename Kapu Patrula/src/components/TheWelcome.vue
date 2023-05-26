@@ -64,7 +64,7 @@ import 'element-plus/theme-chalk/display.css'
             </template>
           </el-popover>
 
-          <el-form-item label="Dzīvnieks" >
+          <el-form-item label="Dzīvnieks" prop="animal">
             <el-radio-group v-model="form.animal">
               <el-radio label="Suns">Suns</el-radio>
               <el-radio label="Kaķis">Kaķis</el-radio>
@@ -240,14 +240,16 @@ export default {
           {required: true, message: 'Nav derīga e-pasta adrese', trigger: 'change', validator: this.validateEmail}
         ],
         happened: [
-          {require: true, trigger: 'change', validator: this.isSelectedChoice}
+          {require: true, trigger: 'change', validator: this.isSelectedHappened}
         ],
+        animal: [
+          {require: true, trigger: 'change', validator: this.isSelectedAnimal}
+        ]
       },
       step: ['1'],
       canSubmit: false,
       activeStep: 0,
       eventState: '',
-      animal: '',
       animals: [
         {
           value: 'Suns',
@@ -370,8 +372,21 @@ export default {
         this.step.push("2");
       }
     },
-    isSelectedChoice(event, value) {
-      return this.eventState != '';
+    isSelectedHappened(event, value) {
+      this.isHappend = value !== '';
+      this.isWhatHappend();
+      return this.isHappend;
+    },
+    isSelectedAnimal(event, value) {
+      this.isAnimal = value !== '';
+      this.isWhatHappend();
+      return this.isAnimal;
+    },
+    isWhatHappend() {
+      if (this.isHappend && this.isAnimal && this.activeStep === 1) {
+        this.activeStep++;
+        this.step.push("3");
+      }
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
