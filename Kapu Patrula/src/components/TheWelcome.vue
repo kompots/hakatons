@@ -44,7 +44,7 @@ import 'element-plus/theme-chalk/display.css'
       </el-collapse-item>
       <el-collapse-item title="Kas noticis?" :disabled="activeStep!==1" name="2">
         <div class="demo-button-style">
-          <el-form-item label="Status" style="float: left; width: 75vw; margin-right: 16px;">
+          <el-form-item label="Status" style="float: left; width: 75vw; margin-right: 16px;" prop="happened">
             <el-radio-group v-model="eventState">
               <el-radio label="Atrasts">Atrasts</el-radio>
               <el-radio label="Pazudis">Pazudis</el-radio>
