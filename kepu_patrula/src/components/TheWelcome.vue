@@ -335,7 +335,7 @@ export default {
       skirnes: [
         {
           value: 'Bez šķirnes',
-          label: 'b/s',
+          label: 'Bez šķirnes',
         },
         {
           value: 'Šķirnes',
