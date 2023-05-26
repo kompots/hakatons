@@ -37,7 +37,7 @@ import 'element-plus/theme-chalk/display.css'
           <el-form-item label="Tālrunis" prop="phone">
             <el-input v-model="form.phone" />
           </el-form-item>
-          <el-form-item label="E-pasts" prop="email">
+          <el-form-item label="E-pasts" prop="email" type="email">
             <el-input type="email" v-model="form.email" />
           </el-form-item>
         </div>
