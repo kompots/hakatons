@@ -5,6 +5,7 @@ import ToolingIcon from './icons/IconTooling.vue'
 import EcosystemIcon from './icons/IconEcosystem.vue'
 import CommunityIcon from './icons/IconCommunity.vue'
 import SupportIcon from './icons/IconSupport.vue'
+import MapView from "@/components/MapView.vue";
 import Form from 'vform'
 import { Picture as IconPicture, InfoFilled } from '@element-plus/icons-vue'
 import 'element-plus/theme-chalk/display.css'
@@ -21,7 +22,6 @@ import 'element-plus/theme-chalk/display.css'
     </el-col>
   </el-row>
   <br>
-
   <div class="sludinajuma-forma">
     <el-form :model="form" :rules="rules" label-position="top" id="sludinajums" label-width="220px!important">
     <el-collapse v-model="step" @change="handleChange">
@@ -75,23 +75,18 @@ import 'element-plus/theme-chalk/display.css'
         </div>
       </el-collapse-item>
       <el-collapse-item title="Kur noticis?"  :disabled="activeStep!==2" name="3">
-        <el-form-item label="Notikuma vieta" >
-            <GMapMap
-                :center="form.center"
-                :zoom="7"
-                map-type-id="terrain"
-                style="width: 500px; height: 300px"
-            >
-                <GMapMarker
-                    :key="index"
-                    v-for="(m, index) in form.markers"
-                    :position="m.position"
-                    :clickable="true"
-                    :draggable="true"
-                    @click="form.center=m.position"
-                    />
-            </GMapMap>
-        </el-form-item>
+        <div id="locationMap">
+          <MapView />
+        </div>
+        <div id="manualadress">
+          <el-form-item label="Pilsēta"  prop="city">
+            <el-input v-model="form.city" />
+          </el-form-item>
+          <el-form-item label="Adrese" prop="address">
+            <el-input v-model="form.address" />
+          </el-form-item>
+        </div>
+        <br/>
         <el-form-item label="Notikuma datums" prop="date">
           <el-date-picker
               style="width: 83vw;!important;"
@@ -201,6 +196,7 @@ import 'element-plus/theme-chalk/display.css'
     </el-form>
   </div>
 </template>
+
 <script>
 import {ElMessage} from 'element-plus'
 import Form from "vform";
@@ -209,6 +205,8 @@ export default {
   data() {
     return {
       form: new Form({
+        city: '',
+        address: '',
         firstname: '',
         email: '',
         phone: '',
@@ -220,6 +218,11 @@ export default {
         date: '',
         dzimums: '',
         description: '',
+        options: {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0,
+        },
         center: {
           lat: 56.946285, lng: 24.105078
         },
@@ -383,6 +386,7 @@ export default {
   created() {
   },
   mounted() {
+    navigator.geolocation.getCurrentPosition(this.success, this.error, this.options);
   },
   methods: {
     toggleSubmitButtons(event){
@@ -459,7 +463,15 @@ export default {
     },
     resetForm(){
       document.getElementById("sludinajums").reset();
+    },
+    success(pos) {
+
+      document.getElementById("manualadress").style.display = 'none'
+    },
+    error(err) {
+      document.getElementById("locationMap").style.display = 'none'
     }
+
   }
 }
 </script>
