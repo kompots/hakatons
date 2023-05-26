@@ -77,12 +77,16 @@ import 'element-plus/theme-chalk/display.css'
       <el-collapse-item title="Kur noticis?"  :disabled="activeStep!==2" name="3">
         <el-form-item label="Notikuma vieta" >
             <GMapMap
+                ref="google"
                 :center="form.center"
                 :zoom="7"
                 map-type-id="terrain"
                 style="width: 500px; height: 300px"
             >
-              <GMapCluster>
+              <GMapCluster
+                  :algorithm="form.algorithm"
+                  :renderer="{ renderer: this.renderer }"
+              >
                 <GMapMarker
                     :key="index"
                     v-for="(m, index) in form.markers"
@@ -90,7 +94,7 @@ import 'element-plus/theme-chalk/display.css'
                     :clickable="true"
                     :draggable="true"
                     @click="form.center=m.position"
-                />
+                    />
               </GMapCluster>
             </GMapMap>
         </el-form-item>
@@ -145,7 +149,7 @@ import 'element-plus/theme-chalk/display.css'
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="Apzīmējums">
+          <el-form-item label="Apzīmējums" prop="mark">
             <el-input v-model="form.apzimejumi" style="float: left; width: 75vw; margin-right: 16px;"/>
             <el-popover
                 placement="left-start"
@@ -159,7 +163,7 @@ import 'element-plus/theme-chalk/display.css'
               </template>
             </el-popover>
           </el-form-item>
-          <el-form-item label="Apraksts">
+          <el-form-item label="Apraksts" prop="description">
             <el-input v-model="form.description" type="textarea" style="float: left; width: 75vw; margin-right: 16px;"/>
             <el-popover
                 placement="left-start"
@@ -202,6 +206,7 @@ import 'element-plus/theme-chalk/display.css'
   </div>
 </template>
 <script>
+import {GridAlgorithm} from '@googlemaps/markerclusterer';
 import {ElMessage} from 'element-plus'
 import Form from "vform";
 export default {
@@ -209,6 +214,7 @@ export default {
   data() {
     return {
       form: new Form({
+        algorithm: new GridAlgorithm({}),
         firstname: '',
         email: '',
         phone: '',
@@ -276,7 +282,13 @@ export default {
         ],
         date: [
           {required: true, message: 'Nepareizs datums noradīts', trigger: 'change', validator: this.isCorrectDate}
-        ]
+        ],
+        mark: [
+            {required: true, message: 'Nepareizi ievadīts apzimējums', trigger: 'change', validator: this.isCorrectMark}
+        ],
+        description: [
+          {required: true, message: 'Nepareizi ievadīts apraksts', trigger: 'change', validator: this.isCorrectDescription}
+        ],
       },
       step: ['1'],
       canSubmit: false,
@@ -379,6 +391,15 @@ export default {
   mounted() {
   },
   methods: {
+    renderer: ({count, position}) => new this.google.maps.Marker({
+      label: {
+        text: String(count),
+        color: 'white',
+        fontSize: '10px',
+      },
+      position,
+      zIndex: Number(this.google.maps.Marker.MAX_ZINDEX) + count,
+    }),
     toggleSubmitButtons(event){
       if(event){
         this.canSubmit = true;
@@ -433,6 +454,12 @@ export default {
         this.activeStep++;
         this.step.push("4");
       }
+    },
+    isCorrectMark(event, value) {
+      return /^[A-Z0-9]{3,32}$/i.test(value);
+    },
+    isCorrectDescription(event, value) {
+      return /^[A-Z0-9]$/i.test(value);
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
