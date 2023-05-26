@@ -75,7 +75,26 @@ import 'element-plus/theme-chalk/display.css'
         </div>
       </el-collapse-item>
       <el-collapse-item title="Kur noticis?"  :disabled="activeStep!==2" name="3">
-        <el-form-item label="Notikuma datums" >
+        <el-form-item label="Notikuma vieta" >
+            <GMapMap
+                :center="form.center"
+                :zoom="7"
+                map-type-id="terrain"
+                style="width: 500px; height: 300px"
+            >
+              <GMapCluster>
+                <GMapMarker
+                    :key="index"
+                    v-for="(m, index) in form.markers"
+                    :position="m.position"
+                    :clickable="true"
+                    :draggable="true"
+                    @click="form.center=m.position"
+                />
+              </GMapCluster>
+            </GMapMap>
+        </el-form-item>
+        <el-form-item label="Notikuma datums" prop="date">
           <el-date-picker
               style="width: 83vw;!important;"
               v-model="form.date"
@@ -200,7 +219,17 @@ export default {
         apzimejumi: '',
         date: '',
         dzimums: '',
-        description: ''
+        description: '',
+        center: {
+          lat: 56.946285, lng: 24.105078
+        },
+        markers: [
+          {
+            position: {
+              lat: 56.964310, lng: 24.134800
+            }
+          }
+        ]
       }),
       pickerOptions: {
         disabledDate(time) {
@@ -244,6 +273,9 @@ export default {
         ],
         animal: [
           {require: true, trigger: 'change', validator: this.isSelectedAnimal}
+        ],
+        date: [
+          {required: true, message: 'Nepareizs datums noradīts', trigger: 'change', validator: this.isCorrectDate}
         ]
       },
       step: ['1'],
@@ -334,7 +366,10 @@ export default {
       ],
       isFirstName: false,
       isPhone: false,
-      isEmail: false
+      isEmail: false,
+      isAnimal: false,
+      isHappened: false,
+      isDate: false
     }
   },
 
@@ -374,18 +409,29 @@ export default {
     },
     isSelectedHappened(event, value) {
       this.isHappend = value !== '';
-      this.isWhatHappend();
+      this.isWhatHappenedFullFilled();
       return this.isHappend;
     },
     isSelectedAnimal(event, value) {
       this.isAnimal = value !== '';
-      this.isWhatHappend();
+      this.isWhatHappenedFullFilled();
       return this.isAnimal;
     },
-    isWhatHappend() {
+    isWhatHappenedFullFilled() {
       if (this.isHappend && this.isAnimal && this.activeStep === 1) {
         this.activeStep++;
         this.step.push("3");
+      }
+    },
+    isCorrectDate(event, value) {
+      this.isDate = new Date(value).getTime() <= new Date().getTime();
+      this.isWhereHappenedFullFilled();
+      return this.isDate;
+    },
+    isWhereHappenedFullFilled() {
+      if (this.isDate && this.activeStep === 2) {
+        this.activeStep++;
+        this.step.push("4");
       }
     },
     handleRemove(file, fileList) {
